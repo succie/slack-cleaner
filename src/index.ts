@@ -7,7 +7,7 @@ dotenv.config();
 const bot = new WebClient(process.env.BOT_TOKEN);
 const user = new WebClient(process.env.USER_TOKEN);
 
-const MAX_MESSAGE_NUMBER = 50;
+const MAX_MESSAGE_NUMBER = Number(process.env.MAX_MESSAGE_NUMBER);
 
 interface JointedChannel {
   id: string;

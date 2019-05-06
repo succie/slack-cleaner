@@ -42,7 +42,7 @@ async function main() {
     `Joined channels of cleaner is ${[...map(joinedChannels, "name")]}`
   );
 
-  joinedChannels.forEach(async channel => {
+  for await (let channel of joinedChannels) {
     const messages = await user.channels
       .history({
         channel: channel.id,
@@ -59,6 +59,8 @@ async function main() {
         return [];
       });
 
+    console.log(`${channel.name} has ${messages.length} messages.`);
+
     // MAX_MESSAGE_NUMBER を超えていた場合, メッセージ数 - MAX_MESSAGE_NUMBER 分のメッセージを消す.
     if (messages.length > MAX_MESSAGE_NUMBER) {
       console.log(
@@ -73,7 +75,7 @@ async function main() {
           });
       }
     }
-  });
+  }
 }
 
 if (process.env.LOCAL) {

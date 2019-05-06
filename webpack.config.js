@@ -4,7 +4,8 @@ module.exports = {
   entry: path.join(__dirname, "src/index.ts"),
   output: {
     path: path.join(__dirname, "dist"),
-    filename: "index.js"
+    filename: "index.js",
+    libraryTarget: "commonjs"
   },
   target: "node",
   mode: "production",
@@ -15,7 +16,15 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        loader: "ts-loader"
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [["@babel/preset-env", { targets: { node: "8.10" } }]]
+            }
+          },
+          "ts-loader"
+        ]
       }
     ]
   }

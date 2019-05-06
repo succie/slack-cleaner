@@ -1,5 +1,6 @@
 import { WebClient } from "@slack/web-api";
 import dotenv from "dotenv";
+import { map } from "lodash";
 
 // Load .env file.
 dotenv.config();
@@ -11,6 +12,7 @@ const MAX_MESSAGE_NUMBER = Number(process.env.MAX_MESSAGE_NUMBER);
 
 interface JointedChannel {
   id: string;
+  name: string;
   created: string;
 }
 
@@ -24,13 +26,21 @@ interface JointedChannel {
           return !!channel.is_member;
         })
         .map(channel => {
-          return { id: channel.id, created: channel.created };
+          return {
+            id: channel.id,
+            name: channel.name,
+            created: channel.created
+          };
         });
     })
     .catch(err => {
       console.error(err);
       return [];
     });
+
+  console.log(
+    `Joined channels of cleaner is ${[...map(joinedChannels, "name")]}`
+  );
 
   joinedChannels.forEach(async channel => {
     const messages = await user.channels
@@ -51,6 +61,10 @@ interface JointedChannel {
 
     // MAX_MESSAGE_NUMBER を超えていた場合, メッセージ数 - MAX_MESSAGE_NUMBER 分のメッセージを消す.
     if (messages.length > MAX_MESSAGE_NUMBER) {
+      console.log(
+        `${channel.name} exceeds ${messages.length -
+          MAX_MESSAGE_NUMBER} messages.`
+      );
       for (let i = 0; i < messages.length - MAX_MESSAGE_NUMBER; i++) {
         await user.chat
           .delete({ channel: channel.id, ts: messages[i].ts })

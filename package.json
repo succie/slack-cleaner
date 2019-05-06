@@ -15,10 +15,12 @@
   "dependencies": {
     "@slack/web-api": "^5.0.1",
     "date-fns": "^1.30.1",
-    "dotenv": "^8.0.0"
+    "dotenv": "^8.0.0",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
+    "@types/lodash": "^4.14.123",
     "npm-run-all": "^4.1.5",
     "rimraf": "^2.6.3",
     "typescript": "^3.4.5"

@@ -16,5 +16,5 @@ echo "Build application."
 npm run build
 
 # Archive dist/index.js
-echo "Archive dist/index.js to archive/slack-cleaner.zip."
-zip -9qr archive/slack-cleaner.zip dist/index.js
+echo "Archive dist/index.js and .env to archive/slack-cleaner.zip."
+zip -9qjr archive/slack-cleaner.zip dist/index.js .env

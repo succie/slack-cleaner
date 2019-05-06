@@ -6,7 +6,7 @@
   "scripts": {
     "start": "run-s clean build exec",
     "build": "tsc",
-    "exec": "node dist/index.js",
+    "exec": "LOCAL=true node dist/index.js",
     "clean": "rimraf dist/"
   },
   "keywords": [],

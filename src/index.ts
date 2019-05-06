@@ -16,7 +16,7 @@ interface JointedChannel {
   created: string;
 }
 
-(async () => {
+async function main() {
   // Bot が参加しているチャンネル一覧.
   const joinedChannels: JointedChannel[] = await bot.channels
     .list()
@@ -74,4 +74,12 @@ interface JointedChannel {
       }
     }
   });
-})();
+}
+
+if (process.env.LOCAL) {
+  main();
+}
+
+exports.handler = async () => {
+  await main();
+};

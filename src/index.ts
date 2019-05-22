@@ -1,19 +1,21 @@
 import { WebClient } from "@slack/web-api";
-import dotenv from "dotenv";
 import { map } from "lodash";
+import config from "config";
 
-// Load .env file.
-dotenv.config();
+const bot = new WebClient(config.get("token.bot"));
+const user = new WebClient(config.get("token.user"));
 
-const bot = new WebClient(process.env.BOT_TOKEN);
-const user = new WebClient(process.env.USER_TOKEN);
-
-const MAX_MESSAGE_NUMBER = Number(process.env.MAX_MESSAGE_NUMBER);
+const MAX_MESSAGE_NUMBER = Number(config.get("default.maxMessageNumber"));
 
 interface JointedChannel {
   id: string;
   name: string;
   created: string;
+}
+
+interface ChannelsSetting {
+  name: string;
+  maxMessageNumber: number;
 }
 
 async function main() {
@@ -42,6 +44,8 @@ async function main() {
     `Joined channels of cleaner is ${[...map(joinedChannels, "name")]}`
   );
 
+  const channelSettings = config.get<ChannelsSetting[]>("channels");
+
   for await (let channel of joinedChannels) {
     const messages = await user.channels
       .history({
@@ -61,13 +65,22 @@ async function main() {
 
     console.log(`${channel.name} has ${messages.length} messages.`);
 
-    // MAX_MESSAGE_NUMBER を超えていた場合, メッセージ数 - MAX_MESSAGE_NUMBER 分のメッセージを消す.
-    if (messages.length > MAX_MESSAGE_NUMBER) {
+    // チャンネル設定を探す.
+    const thisChannelSetting = channelSettings.find(
+      setting => setting.name === channel.name
+    );
+    // あった場合はその maxMessageNumber を設定し, 無ければ MAX_MESSAGE_NUMBER を設定する.
+    const maxMessageNumber = thisChannelSetting
+      ? thisChannelSetting.maxMessageNumber
+      : MAX_MESSAGE_NUMBER;
+
+    // maxMessageNumber を超えていた場合, メッセージ数 - maxMessageNumber 分のメッセージを消す.
+    if (messages.length > maxMessageNumber) {
       console.log(
         `${channel.name} exceeds ${messages.length -
-          MAX_MESSAGE_NUMBER} messages.`
+          maxMessageNumber} messages.`
       );
-      for (let i = 0; i < messages.length - MAX_MESSAGE_NUMBER; i++) {
+      for (let i = 0; i < messages.length - maxMessageNumber; i++) {
         await user.chat
           .delete({ channel: channel.id, ts: messages[i].ts })
           .catch(err => {

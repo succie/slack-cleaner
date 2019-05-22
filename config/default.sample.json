@@ -1,0 +1,15 @@
+{
+  "token": {
+    "bot": "",
+    "user": ""
+  },
+  "channels": [
+    {
+      "name": "channelName",
+      "maxMessageNumber": 300
+    }
+  ],
+  "default": {
+    "maxMessageNumber": 100
+  }
+}

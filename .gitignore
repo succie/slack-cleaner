@@ -1,4 +1,4 @@
 node_modules/
 dist/
 archive/
-.env
+config/default.json

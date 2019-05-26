@@ -7,30 +7,27 @@
     "start": "run-s clean build exec",
     "build": "webpack",
     "exec": "LOCAL=true node dist/index.js",
-    "clean": "rimraf dist/"
+    "clean": "rimraf dist/",
+    "archive": "sh scripts/archive.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@slack/web-api": "^5.0.1",
-    "config": "^3.1.0",
     "date-fns": "^1.30.1",
-    "dotenv": "^8.0.0",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "@types/config": "0.0.34",
-    "@types/dotenv": "^6.1.1",
-    "@types/lodash": "^4.14.123",
-    "babel-loader": "^8.0.5",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@types/lodash": "^4.14.132",
+    "babel-loader": "^8.0.6",
     "npm-run-all": "^4.1.5",
     "rimraf": "^2.6.3",
-    "ts-loader": "^5.4.5",
+    "ts-loader": "^6.0.1",
     "typescript": "^3.4.5",
-    "webpack": "^4.30.0",
+    "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2"
   }
 }

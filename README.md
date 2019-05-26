@@ -3,13 +3,19 @@
 ## Description
 
 この Bot が参加しているチャンネルで  
-`MAX_MESSAGE_NUMBER` を超えたメッセージ数がある場合に  
-溢れた分のメッセージを削除する
+`maxMessageNumber` を超えたメッセージ数がある場合に  
+溢れた分のメッセージ古い順に削除する
 
 ## Usages
 
-1. `.env.sample` を `.env` に変更
-1. `BOT_TOKEN` , `USER_TOKEN` それぞれに TOKEN を設定
-1. `MAX_MESSAGE_NUMBER` を設定
-1. `npm install` で依存ライブラルをインストール
+1. `config/default.sample.json` を `config/default.json` に変更
+1. `token` にそれぞれ Bot User Oauth Access Token, OAuth Access Token を設定
+   - 以下の Scope を持つ必要があります
+     - admin
+     - channels:histroy
+     - chat:write:user
+     - bot
+1. `default.maxMessageNumber` を設定
+1. チャンネル毎に `maxMessageNumber` を指定したい場合は, `channels` に設定
+1. `npm install` で依存ライブラリをインストール
 1. `npm start` で実行

@@ -6,10 +6,12 @@
   "channels": [
     {
       "name": "channelName",
-      "maxMessageNumber": 300
+      "maxMessageNumber": 300,
+      "deleteFiles": true
     }
   ],
   "default": {
-    "maxMessageNumber": 100
+    "maxMessageNumber": 100,
+    "deleteFiles": false
   }
 }

@@ -10,11 +10,13 @@ namespace Config {
   export interface ChannelSetting {
     name: string;
     maxMessageNumber?: number;
+    deleteFiles?: boolean;
     message?: MessageSetting;
   }
 
   export interface DefaultSetting {
     maxMessageNumber: number;
+    deleteFiles: boolean;
     message?: MessageSetting;
   }
 

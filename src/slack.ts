@@ -35,6 +35,51 @@ namespace Slack {
     user: string;
     text: string;
     ts: string;
+    files?: File[];
+  }
+
+  export interface File {
+    id: string;
+    created: number;
+    timestamp: number;
+    name: string;
+    title: string;
+    mimetype: string;
+    filetype: string;
+    pretty_type: string;
+    user: string;
+    editable: boolean;
+    size: number;
+    mode: string;
+    is_external: boolean;
+    external_type: string;
+    is_public: boolean;
+    public_url_shared: boolean;
+    display_as_bot: boolean;
+    username: string;
+    url_private: string;
+    url_private_download: string;
+    thumb_64: string;
+    thumb_80: string;
+    thumb_360: string;
+    thumb_360_w: number;
+    thumb_360_h: number;
+    thumb_160: string;
+    thumb_360_gif: string;
+    image_exif_rotation: number;
+    original_w: number;
+    original_h: number;
+    deanimate_gif: string;
+    pjpeg: string;
+    permalink: string;
+    permalink_public: string;
+    comments_count: number;
+    is_starred: boolean;
+    shares: object;
+    channels: string[];
+    groups: string[];
+    ims: string[];
+    has_rich_preview: boolean;
   }
 
   export class API {
@@ -75,6 +120,10 @@ namespace Slack {
         channel: channel.id,
         ts: message.ts
       });
+    }
+
+    async deleteFile(file: File) {
+      await this.user.files.delete({ file: file.id });
     }
   }
 }

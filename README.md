@@ -22,6 +22,6 @@
      - start: 処理開始時に投稿されます
      - running: 処理中に投稿されます
      - end: 処理完了時に投稿されます
-1. チャンネル毎に `maxMessageNumber` を指定したい場合は, `channels` に設定
+1. チャンネル毎に `maxMessageNumber`, `files`, `progressMessages` を指定したい場合は, `channels` に設定
 1. `npm install` で依存ライブラリをインストール
 1. `npm start` で実行

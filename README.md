@@ -18,6 +18,10 @@
      - bot
 1. `default.maxMessageNumber` を設定
 1. `default.files` を `true` にした場合, 投稿されたファイルも一緒に削除します
+1. `default.progressMessages` では, 処理のタイミングに応じたメッセージを投稿できます
+     - start: 処理開始時に投稿されます
+     - running: 処理中に投稿されます
+     - end: 処理完了時に投稿されます
 1. チャンネル毎に `maxMessageNumber` を指定したい場合は, `channels` に設定
 1. `npm install` で依存ライブラリをインストール
 1. `npm start` で実行

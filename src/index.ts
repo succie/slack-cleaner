@@ -7,6 +7,7 @@ async function main() {
 
   const slack = new Slack.API(config.token.bot, config.token.user);
 
+  // 参加しているチャンネル
   const joinedChannels = await slack
     .channels()
     .then(channels => channels.filter(channel => channel.is_member));
@@ -15,22 +16,17 @@ async function main() {
 
   await Promise.all(
     Object.entries(joinedChannels).map(async ([_, channel]) => {
-      // メッセージを時刻昇順で取得
-      const messages = await slack.messages(channel, { asc: true });
-
-      // メッセージにファイルが含まれている場合はファイルを取得
-      // ただし, Slackbot が投稿した画像は削除しない.
-      const files = flatten(messages
-        .map(message => {
-          if (message.user !== "USLACKBOT" && message.files)
-            return message.files;
-        })
-        .filter(file => file !== undefined) as (Slack.File[])[]);
-
       // チャンネル設定があれば取得
       const thisChannelSetting = config.channels.find(
         setting => setting.name === channel.name
       );
+
+      // チャンネル設定で progressMessages が設定されていればそれを
+      // されていなければデフォルト設定を使用する
+      const progressMessages =
+        thisChannelSetting && thisChannelSetting.progressMessages != undefined
+          ? thisChannelSetting.progressMessages
+          : config.default.progressMessages;
 
       // チャンネル設定で maxMessageNumber が設定されていればそれを
       // されていなければデフォルト設定を使用する
@@ -46,6 +42,27 @@ async function main() {
           ? thisChannelSetting.deleteFiles
           : config.default.deleteFiles;
 
+      // メッセージを時刻昇順で取得
+      const messages = await slack.messages(channel, { asc: true });
+
+      // Start progress message
+      if (progressMessages && progressMessages.start) {
+        await Promise.all(
+          progressMessages.start.map(async pm => {
+            await slack.postMessage(channel, pm);
+          })
+        );
+      }
+
+      // メッセージにファイルが含まれている場合はファイルを取得
+      // ただし, Slackbot が投稿した画像は削除しない.
+      const files = flatten(messages
+        .map(message => {
+          if (message.user !== "USLACKBOT" && message.files)
+            return message.files;
+        })
+        .filter(file => file !== undefined) as (Slack.File[])[]);
+
       if (messages.length > maxMessageNumber) {
         console.log(
           `${channel.name} exceeds ${messages.length -
@@ -57,6 +74,15 @@ async function main() {
           0,
           messages.length - maxMessageNumber
         );
+
+        // Running progress message
+        if (progressMessages && progressMessages.running) {
+          await Promise.all(
+            progressMessages.running.map(async pm => {
+              await slack.postMessage(channel, pm);
+            })
+          );
+        }
 
         // メッセージを削除
         await Promise.all(
@@ -73,6 +99,15 @@ async function main() {
             })
           );
         }
+      }
+
+      // End progress message
+      if (progressMessages && progressMessages.end) {
+        await Promise.all(
+          progressMessages.end.map(async pm => {
+            await slack.postMessage(channel, pm);
+          })
+        );
       }
     })
   );

@@ -115,6 +115,10 @@ namespace Slack {
       return messages;
     }
 
+    async postMessage(channel: Channel, message: string) {
+      await this.bot.chat.postMessage({ channel: channel.id, text: message });
+    }
+
     async deleteMessage(channel: Channel, message: Message) {
       await this.user.chat.delete({
         channel: channel.id,

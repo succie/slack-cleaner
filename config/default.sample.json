@@ -7,7 +7,12 @@
     {
       "name": "channelName",
       "maxMessageNumber": 300,
-      "deleteFiles": true
+      "deleteFiles": true,
+      "progressMessages": {
+        "start": ["Start clean!"],
+        "running": ["Running clean!"],
+        "end": ["Finished clean!"]
+      }
     }
   ],
   "default": {

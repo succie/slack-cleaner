@@ -11,16 +11,16 @@ namespace Config {
     name: string;
     maxMessageNumber?: number;
     deleteFiles?: boolean;
-    message?: MessageSetting;
+    progressMessages?: ProgressMessagesSetting;
   }
 
   export interface DefaultSetting {
     maxMessageNumber: number;
     deleteFiles: boolean;
-    message?: MessageSetting;
+    progressMessages?: ProgressMessagesSetting;
   }
 
-  export interface MessageSetting {
+  export interface ProgressMessagesSetting {
     start?: string[];
     running?: string[];
     end?: string[];
